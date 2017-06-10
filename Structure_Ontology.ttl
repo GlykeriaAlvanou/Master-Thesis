@@ -8,34 +8,84 @@
 # Description of this ontology
 # ----------------------------
 
-: a owl:Ontology;
-    dct:title "Machine Sensor Ontology"@en;
-    rdfs:comment "";
-    dct:creator "Glykeria Alvanou" ;
-    dct:date "2016-12-20" .
+:machineOntology a owl:Ontology;
+   				   dct:title "Machine Sensor Ontology"@en;
+                   rdfs:comment "Machine Ontology";
+                   dct:creator "Glykeria Alvanou" ;
+                   dct:date "2017-06-10".
 
 
-##### Classes #####
-g:Devices rdf:type owl:Class .
+##### CLASSES #####
 
-g:Device rdf:type owl:Class,
-		 rdfs:subClassOf g:Devices .
+### Structural Elements ###
+:StructuralElements rdf:type owl:Class,
+					rdfs:comment "Physical and logical parts and sub-parts of a device".
 
-g:Components rdf:type owl:Class .
+### Devices ###
+:Devices rdf:type owl:Class;
+         rdfs:subClassOf :StructuralElements;
+        [rdf:type         owl:Restriction ; ###has 1 or more Device
+         owl:onProperty   :hasDevice;
+         owl:mincardinality  "1"^^xsd:nonNegativeInteger ;
+ ] .
 
-g:Component rdf:type owl:Class,
-		    rdfs:subClassOf g:Components ,
+
+### Device  has 1 Components ###
+:Device rdf:type owl:Class,
+		rdfs:subClassOf :Devices,
+		rdfs:comment "Represents a single piece of equipment",
+		 :hasAttribute "uuid".
+
+### Components has 1 or more Component ###
+:Components rdf:type owl:Class ;
+           # rdfs:subClassOf :Device;
+           [rdf:type         owl:Restriction ; ### has 1 or more Component
+            owl:onProperty   :hasComponent;
+            owl:mincardinality  "1"^^xsd:nonNegativeInteger ;
+ ] .
+
+### Component has 1 or more ###
+:Component rdf:type owl:Class,
 		    rdfs:comment "Physical" .
+
+### Subcomponent has 1 or more ###
+:Subcomponent rdf:type owl:Class,
+		       rdfs:comment "Physical" .
+
+### Data elements ###
+:DataElements rdf:type owl:Class,
+			   rdfs:comment "Data that can be collected from a device".
+
+### DataItems has 1 or more DataItem: cardinality ###
+:DataItems rdf:type owl:Class .
+            rdfs:subClassOf :DataElements.
+
+### DataItem ###
+:DataItem rdf:type owl:Class,
+		 rdfs:subClassOf :DataItems,
+		 rdfs:comment .
 
 
 #### Properties ####
 
-
-
 #### Object Properties ####
-g:hasAttributes rdf:type owl:ObjectProperty .
 
-g:hasSubElements rdf:type owl:ObjectProperty .
+:hasDevice rdf:type owl:ObjectProperty .
+		   rdfs:domain :Devices,
+		   rdfs:range :Device.
+
+:hasComponent rdf:type owl:ObjectProperty .
+		      rdfs:domain :Components,
+		      rdfs:range :Component.
+
+:hasAttribute rdf:type owl:ObjectProperty,
+ 			   rdfs:domain :Device,
+ 			   			   :Component. 
+
+:hasSubElement rdf:type owl:ObjectProperty .
+				rdfs:domain :Device,
+							:Component.
+
 
 
 #### Datatype Properties ####
