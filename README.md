@@ -5,6 +5,6 @@ This repository includes all the documentation related to my master thesis topic
 
 -Presentations
 
--Development (Code)
+-Development (Turtle OWL, SPARQL)
 
 -Documentation
