@@ -1,0 +1,151 @@
+1. Find all the device names who have dataitem Availability and their availability.
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX saref: <https://w3id.org/c>
+SELECT *
+WHERE
+{
+    ?device saref:hasName ?name;
+            mmd:hasDataItem ?dataitem.
+  	?dataitem	 mmd:hasAvailability ?availability.
+}  
+
+2. Find the device which has component with a dataitem condition "WARNING" and display the timestamp and the condition message.
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+SELECT ?device ?component ?timestamp ?message
+WHERE
+{
+    ?device ssn:hasPart ?component.
+    ?component mmd:hasDataItem ?dataitem.
+    ?dataitem   mmd:hasCondition "WARNING";
+                sem:hasTimestamp ?timestamp;
+                mmd:hasConditionMessage ?message.
+   }  
+
+3. Find the condition of all dataitems of the components of each device and their timestamp
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX saref: <https://w3id.org/c>
+SELECT ?device ?component ?dataitem ?timestamp ?condition
+WHERE
+{
+    ?device saref:hasName ?name;
+            ssn:hasPart ?component.
+    ?component mmd:hasDataItem ?dataitem.
+    ?dataitem mmd:hasCondition ?condition;
+               sem:hasTimestamp ?timestamp.
+}  
+
+
+4. Find the all dataitems of all the components
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+SELECT *
+WHERE
+{
+    ?device ssn:hasPart ?component.
+    ?component mmd:hasDataItem ?dataitem.
+  	
+}  
+
+5. Find the components and subcomponents of each device
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#2>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT *
+WHERE
+{
+    ?device ssn:hasPart ?component.
+    ?component ssn:hasSubsystem ?subcomponent.    
+}  
+
+6. Find the components who have a dataitem Emergency and the emergencystop condition
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX saref: <https://w3id.org/c>
+SELECT ?device ?component ?dataitem ?timestamp ?emergencystop
+WHERE
+{
+    ?device saref:hasName ?name;
+            ssn:hasPart ?component.
+    ?component mmd:hasDataItem ?dataitem.
+    ?dataitem mmd:hasEmergencyStop ?emergencystop;
+              sem:hasTimestamp ?timestamp.
+}  
+
+7. Find the rotary velocity of the subcomponents of the device and the subcomponents
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+SELECT ?device ?component ?subcomponent ?dataitem ?rotaryvelocity
+WHERE
+{
+    ?device   ssn:hasPart ?component.
+    ?component ssn:hasSubsystem ?subcomponent.
+    ?subcomponent mmd:hasDataItem ?dataitem.
+    ?dataitem mmd:hasRotaryVelocity ?rotaryvelocity.
+}  
+
+
+8. Find the execution status of the subcomponent of a device. Name the subcomponent and its data item
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT *
+WHERE
+{
+    ?device ssn:hasPart ?component.
+    ?component ssn:hasSubsystem ?subcomponent.    
+    ?subcomponent mmd:hasDataItem ?dataitem.
+    ?dataitem     mmd:hasExecution ?execution.
+   
+}  
+
+9. Find the name and the temperature of the subcomponents
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX saref: <https://w3id.org/c>
+SELECT ?subcomponent ?name ?temperature
+WHERE
+{
+    ?component ssn:hasSubsystem ?subcomponent.
+	?subcomponent saref:hasName ?name;
+               mmd:hasDataItem ?dataitem.
+	?dataitem mmd:hasTemperature ?temperature.
+}  
+
+10. Find the components of the device "i400"
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX saref: <https://w3id.org/c>
+SELECT ?component 
+WHERE
+{
+    mmd:I400 saref:hasName "MFMS10-MC1".
+	mmd:I400 ssn:hasPart ?component
+}  
+
+11. Find the name of the subcomponents of axe400
+PREFIX mmd: <http://example.org/mmd/mazakmachinedata#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ssn: <http://purl.oclc.org/NET/ssnx/ssn>
+PREFIX saref: <https://w3id.org/c>
+SELECT ?subcomponent ?name
+WHERE
+{
+    mmd:Axe400 ssn:hasSubsystem ?subcomponent.
+    ?subcomponent saref:hasName ?name.
+}  
